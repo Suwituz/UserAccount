@@ -5,12 +5,43 @@
 </head>
 <body>
     <h2>User List</h2>
-    <ul>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Email</th>
+          <th>DOB</th>
+          <th>Marital_status</th>
+          <th>Nationality</th>
+          <th>Gender</th>
+          <th>status</th>
+          <th>Nationality</th>
+          
+          
+
+          <!-- Add more column headers for other fields -->
+        </tr>
+      </thead>
+      <tbody>
         {% for user in users %}
-        <li>{{ user.username }}</li>
-        {% empty %}
-        <li>No users found.</li>
+          <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.first_name }}</td>
+            <td>{{ user.last_name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.date_of_birth  }}</td>
+            <td>{{ user.marital_status  }}</td>
+            <td>{{ user.nationality  }}</td>
+            <td>{{ user.gender  }}</td>
+            <td>{{ user.status  }}</td>
+            <td>{{ user.NID_or_passport_number  }}</td>
+
+            <!-- Add more columns for other fields -->
+          </tr>
         {% endfor %}
-    </ul>
+      </tbody>
+    </table>
 </body>
 </html>

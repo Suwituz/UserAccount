@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib.auth.forms import PasswordResetForm
-from .forms import CustomPasswordResetForm,CustomSetPasswordForm
+from .forms import CustomPasswordResetForm,CustomSetPasswordForm,AccountVerificationForm
 from django.contrib.auth.views import PasswordResetConfirmView,PasswordResetDoneView
 from django.contrib.auth.views import PasswordResetCompleteView
 from django.contrib.messages.views import SuccessMessageMixin
@@ -55,7 +55,7 @@ def login_view(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return HttpResponseRedirect('/users/home/')  # Replace 'home' with the URL name of your home page
+                return HttpResponseRedirect('/users/account-verification/')  # Replace 'home' with the URL name of your home page
             else:
                 form.add_error(None, 'Invalid username or password.')
     else:
@@ -129,3 +129,26 @@ class MyPasswordResetConfirmView(SuccessMessageMixin, PasswordResetConfirmView):
         return render(self.request, self.template_name, {'form': form})
 class CustomPasswordResetDoneView(PasswordResetDoneView):
     template_name = 'password_reset_done.html'
+def account_verification(request):
+    if request.method == 'POST':
+        form = AccountVerificationForm(request.POST, request.FILES)
+        if form.is_valid():
+            # Get the current user
+            user = request.user
+
+            # Update the user model fields with the form data
+            user.NID_or_passport_number = form.cleaned_data['NID_or_passport_number']
+            user.document_image = form.cleaned_data['document_image']
+
+            # Save the user model
+            user.save()
+
+            # Redirect to a success page or perform any additional actions
+            return redirect('verification_success')
+
+    else:
+        form = AccountVerificationForm()
+
+    return render(request, 'account_verification.html', {'form': form})
+def verification_success(request):
+    return render(request, 'verification_success.html')

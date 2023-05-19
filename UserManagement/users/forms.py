@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import User
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.forms import PasswordResetForm,SetPasswordForm
+from django.core.validators import FileExtensionValidator
 
 class SignUpForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
@@ -27,3 +28,10 @@ class CustomSetPasswordForm(SetPasswordForm):
         super().__init__(*args, **kwargs)
         self.fields['new_password1'].widget.attrs['placeholder'] = 'New Password'
         self.fields['new_password2'].widget.attrs['placeholder'] = 'Confirm New Password'
+class AccountVerificationForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['NID_or_passport_number', 'document_image']
+        document_image = forms.ImageField(
+    validators=[FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png'])]
+)

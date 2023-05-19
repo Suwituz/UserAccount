@@ -15,6 +15,13 @@ class User(AbstractUser):
         ('DIVORCED', 'Divorced'),
         ('WIDOWED', 'Widowed'),
     ]
+    ACCOUNT_STATE_CHOICES = [
+        ('UNVERIFIED', 'Unverified'),
+        ('PENDING_VERIFICATION', 'Pending_verification'),
+        ('VERIFIED', 'Verified'),
+
+    ]
+    
 
     # photo = models.ImageField(upload_to='user_photos')
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
@@ -25,6 +32,9 @@ class User(AbstractUser):
     first_name = models.CharField(max_length=10)
     last_name = models.CharField(max_length=10)
     email = models.EmailField(unique=True)
+    status = models.CharField(max_length=100, choices=ACCOUNT_STATE_CHOICES,default='UNVERIFIED')
+    NID_or_passport_number = models.CharField(max_length=100, blank=True)
+    document_image = models.ImageField(upload_to='documents/', blank=True)
     # Add any additional fields or methods as needed
 
     def __str__(self):
