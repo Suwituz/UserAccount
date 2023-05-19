@@ -1,0 +1,18 @@
+<!-- signup.html -->
+<form method="post">
+  {% csrf_token %}
+  
+  {% for field in form %}
+    <div class="field-wrapper">
+      {{ field.label_tag }}
+      {{ field }}
+      {% if field.errors %}
+        <div class="error-message">
+          {{ field.errors|join:", " }}
+        </div>
+      {% endif %}
+    </div>
+  {% endfor %}
+  
+  <button type="submit">Sign Up</button>
+</form>
